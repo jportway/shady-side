@@ -19,7 +19,7 @@ package com.jsuereth.gl.math
 import scala.math.Numeric
 import scala.math.Fractional
 
-extension ops on [T](x: T)(using n: Numeric[T]) {
+extension [T](x: T)(using n: Numeric[T]) {
   def +(y: T): T = n.plus(x,y)
   def -(y: T): T = n.minus(x,y)
   def *(y: T): T = n.times(x,y)
@@ -27,9 +27,9 @@ extension ops on [T](x: T)(using n: Numeric[T]) {
   def unary_- = n.negate(x)
 }
 
-def [T](x: T) unary_-(using n: Numeric[T]): T = n.negate(x)
+//extension [T](x: T) def unary_-(using n: Numeric[T]): T = n.negate(x)
 
-extension fractionalOps on [T](x: T)(using f: Fractional[T]) {
+extension [T](x: T)(using f: Fractional[T]) {
   def /(y: T) = f.div(x, y)
 }
 

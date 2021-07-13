@@ -20,7 +20,7 @@ package parser
 
 
 import java.io.{File, InputStream}
-import math.{Vec2,Vec3, given _}
+import math.{Vec2,Vec3, given}
 
 
 /** A mesh that has been parsed from an ObjFile. */

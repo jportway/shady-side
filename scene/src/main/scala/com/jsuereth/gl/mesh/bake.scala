@@ -18,7 +18,7 @@ package com.jsuereth.gl
 package mesh
 
 
-import math.{given _, _}
+import math.{given, *}
 
 val noMaterial =
   RawMaterial("none", BaseMaterial(), MaterialTextures())

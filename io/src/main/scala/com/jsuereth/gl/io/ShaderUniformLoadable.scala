@@ -78,17 +78,17 @@ object ShaderUniformLoadable {
   def textures(using ShaderLoadingEnvironment): ActiveTextures = summon[ShaderLoadingEnvironment].textures
 
 
-  given ShaderUniformLoadable[Float] {
+  given ShaderUniformLoadable[Float] with {
     def loadUniform(location: UniformLocation, value: Float)(using ShaderLoadingEnvironment): Unit =
       glUniform1f(location.asInstanceOf[UniformLocation.FieldLocation].location, value)
   }
 
-  given ShaderUniformLoadable[Int] {
+  given ShaderUniformLoadable[Int] with {
     def loadUniform(location: UniformLocation, value: Int)(using ShaderLoadingEnvironment): Unit =
       glUniform1i(location.asInstanceOf[UniformLocation.FieldLocation].location, value)
   }
   import com.jsuereth.gl.math._
-  given Matrix3x3FloatLoader as ShaderUniformLoadable[Matrix3x3[Float]] {
+  given Matrix3x3FloatLoader : ShaderUniformLoadable[Matrix3x3[Float]] with {
     import org.lwjgl.opengl.GL20.glUniformMatrix3fv
     def loadUniform(location: UniformLocation, value: Matrix3x3[Float])(using ShaderLoadingEnvironment): Unit = {
       val buf: java.nio.FloatBuffer = {
@@ -102,7 +102,7 @@ object ShaderUniformLoadable {
       glUniformMatrix3fv(location.asInstanceOf[UniformLocation.FieldLocation].location, false, buf)
     }
   }
-  given Matrix4x4FloatUniformLoader as ShaderUniformLoadable[Matrix4x4[Float]] {
+  given Matrix4x4FloatUniformLoader : ShaderUniformLoadable[Matrix4x4[Float]] with {
     import org.lwjgl.system.MemoryStack
     import org.lwjgl.opengl.GL20.glUniformMatrix4fv
     def loadUniform(location: UniformLocation, value: Matrix4x4[Float])(using ShaderLoadingEnvironment): Unit = {
@@ -118,21 +118,21 @@ object ShaderUniformLoadable {
     }
   }
 
-  given loadVec2Float as ShaderUniformLoadable[Vec2[Float]] {
+  given loadVec2Float : ShaderUniformLoadable[Vec2[Float]] with {
     import org.lwjgl.opengl.GL20.glUniform2f
     import org.lwjgl.system.MemoryStack
     def loadUniform(location: UniformLocation, value: Vec2[Float])(using ShaderLoadingEnvironment): Unit =
       glUniform2f(location.asInstanceOf[UniformLocation.FieldLocation].location, value.x, value.y)
   }
 
-  given loadVec2Int as ShaderUniformLoadable[Vec2[Int]] {
+  given loadVec2Int : ShaderUniformLoadable[Vec2[Int]] with {
     import org.lwjgl.opengl.GL20.glUniform2i
     import org.lwjgl.system.MemoryStack
     def loadUniform(location: UniformLocation, value: Vec2[Int])(using ShaderLoadingEnvironment): Unit =
       glUniform2i(location.asInstanceOf[UniformLocation.FieldLocation].location, value.x, value.y)
   }
 
-  given loadVec3Float as ShaderUniformLoadable[Vec3[Float]] {
+  given loadVec3Float : ShaderUniformLoadable[Vec3[Float]] with {
     import org.lwjgl.opengl.GL20.glUniform3f
     import org.lwjgl.opengl.GL20.glUniform4f
     import org.lwjgl.system.MemoryStack
@@ -140,21 +140,21 @@ object ShaderUniformLoadable {
       glUniform3f(location.asInstanceOf[UniformLocation.FieldLocation].location, value.x, value.y, value.z)
   }
 
-  given loadVec3Int as ShaderUniformLoadable[Vec3[Int]] {
+  given loadVec3Int : ShaderUniformLoadable[Vec3[Int]] with {
     import org.lwjgl.opengl.GL20.glUniform3i
     import org.lwjgl.system.MemoryStack
     def loadUniform(location: UniformLocation, value: Vec3[Int])(using ShaderLoadingEnvironment): Unit =
     glUniform3i(location.asInstanceOf[UniformLocation.FieldLocation].location, value.x, value.y, value.z)
   }
 
-  given loadVec4Float as ShaderUniformLoadable[Vec4[Float]] {
+  given loadVec4Float : ShaderUniformLoadable[Vec4[Float]] with {
     import org.lwjgl.opengl.GL20.glUniform4f
     import org.lwjgl.system.MemoryStack
     def loadUniform(location: UniformLocation, value: Vec4[Float])(using ShaderLoadingEnvironment): Unit =
       glUniform4f(location.asInstanceOf[UniformLocation.FieldLocation].location, value.x, value.y, value.z, value.w)
   }
 
-  given loadVec4Int as ShaderUniformLoadable[Vec4[Int]] {
+  given loadVec4Int : ShaderUniformLoadable[Vec4[Int]] with {
     import org.lwjgl.opengl.GL20.glUniform4i
     import org.lwjgl.system.MemoryStack
     def loadUniform(location: UniformLocation, value: Vec4[Int])(using ShaderLoadingEnvironment): Unit =
@@ -163,7 +163,7 @@ object ShaderUniformLoadable {
 
   // Now opaque types, i.e. textures + buffers.
   import com.jsuereth.gl.texture._
-  given ShaderUniformLoadable[Texture2D] {
+  given ShaderUniformLoadable[Texture2D] with {
     def loadUniform(location: UniformLocation, value: Texture2D)(using ShaderLoadingEnvironment): Unit = {
       // TODO - figure out how to free acquired textures in a nice way
       val id = textures.acquire()

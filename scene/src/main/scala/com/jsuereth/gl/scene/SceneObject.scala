@@ -18,7 +18,7 @@ package com.jsuereth.gl
 package scene
 
 import mesh.BakedMesh
-import math.{given _, _}
+import math.{given, *}
 /** 
  * Represents an object in the scene. 
  * TODO - Define how to interact w/ objects, and how we render them.

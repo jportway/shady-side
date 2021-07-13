@@ -20,17 +20,17 @@ package math
 // TODO - move this somewhere it'll work.
 opaque type UInt = Int
 
-def (x: UInt) toLong: Long = x & 0xffffffffL
-def (x: UInt) + (y: UInt): UInt = x + y
-def (x: UInt) - (y: UInt): UInt = x - y
-def (x: UInt) * (y: UInt): UInt = x * y
-def (x: UInt) / (y: UInt): UInt = (x.toLong / y.toLong).toInt
-def (x: UInt) < (y: UInt): Boolean = x.toLong < y.toLong
-def (x: UInt) <= (y: UInt): Boolean = x.toLong <= y.toLong
-def (x: UInt) > (y: UInt): Boolean = x.toLong > y.toLong
-def (x: UInt) >= (y: UInt): Boolean = x.toLong >= y.toLong
-def (x: UInt) == (y: UInt): Boolean = x == y
-def (x: UInt) != (y: UInt): Boolean = x != y
+extension (x: UInt) def  toLong: Long = x & 0xffffffffL
+//extension (x: UInt) def + (y: UInt): UInt = x + y
+//extension (x: UInt) def - (y: UInt): UInt = x - y
+//extension (x: UInt) def * (y: UInt): UInt = x * y
+//extension (x: UInt) def / (y: UInt): UInt = (x.toLong / y.toLong).toInt
+extension (x: UInt) def < (y: UInt): Boolean = x.toLong < y.toLong
+extension (x: UInt) def <= (y: UInt): Boolean = x.toLong <= y.toLong
+extension (x: UInt) def > (y: UInt): Boolean = x.toLong > y.toLong
+extension (x: UInt) def >= (y: UInt): Boolean = x.toLong >= y.toLong
+extension (x: UInt) def == (y: UInt): Boolean = x == y
+extension (x: UInt) def != (y: UInt): Boolean = x != y
 
 object UInt {
     def apply(x: Int): UInt = x

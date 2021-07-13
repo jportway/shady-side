@@ -43,7 +43,7 @@ inline def sizeOf[T]: Int = inline erasedValue[T] match {
     // TODO - SizedArray opaque type...
     case _: (a *: b) => sizeOf[a]+sizeOf[b]
     case _: Product => summonFrom {
-        case given m: Mirror.ProductOf[T] => sizeOf[m.MirroredElemTypes]
+        case m: Mirror.ProductOf[T] => sizeOf[m.MirroredElemTypes]
         case _ => compiletime.error("Product is not plain-old-data, cannot compute the type.")
     }
     // Note: Unit shows up when we decompose tuples with *:
@@ -147,7 +147,7 @@ inline def vaoAttributes[T]: Array[VaoAttribute] = {
                                   attr[d](3, stride, sizeOf[a]+sizeOf[b]+sizeOf[c]))
     case _: Product =>
       summonFrom {
-        case given m: Mirror.ProductOf[T] => vaoAttributes[m.MirroredElemTypes]
+        case m: Mirror.ProductOf[T] => vaoAttributes[m.MirroredElemTypes]
       }
     case _ => compiletime.error("Cannot compute the VAO attributes of this type.")
   }

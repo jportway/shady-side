@@ -1,18 +1,16 @@
-import com.typesafe.sbt.license.{DepModuleInfo}
-
-val dottyVersion = "0.23.0-RC1"
+val scVersion = "3.0.0"
 val lwjglVersion = "3.2.2"
 val lwjglNatives: String = 
     sys.props("os.name") match {
         case null => "natives-linux"
         case x if x.toLowerCase contains "windows" => "natives-windows"
-        case x if x.toLowerCase contains "mac" => "natives-osx"
+        case x if x.toLowerCase contains "mac" => "natives-macos"
         case _ => "natives-linux"
     }
 
 def lwjgl(name: String) = "org.lwjgl" % name % lwjglVersion
 def lwjglNative(name: String) = lwjgl(name) classifier lwjglNatives
-def junit = "com.novocode" % "junit-interface" % "0.11" % "test"
+def junit = "com.github.sbt" % "junit-interface" % "0.13.2" % "test"
 def findBugs = "com.google.code.findbugs" % "jsr305" % "3.0.2"
 
 def commonSettings: Seq[Setting[_]] = Seq(
@@ -21,15 +19,15 @@ def commonSettings: Seq[Setting[_]] = Seq(
     licenses += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt")),
     organization := "com.jsuereth.shadyside",
     version := "0.1.0",
-    scalaVersion := dottyVersion,
-    licenseReportTitle := "third_party_licenses",
-    licenseReportDir := baseDirectory.value / "third_party",
-    licenseReportTypes := Seq(MarkDown),
-    licenseReportNotes := {
-      case DepModuleInfo(group, id, version) if group contains "org.lwjgl" => "Lightweight Java Game Library"
-      case DepModuleInfo(group, id, version) if id contains "junit" => "Used for testing"
-      case DepModuleInfo(group, id, version) if id contains "jsr305" => "Required to compile, transitive dep."
-    },
+    scalaVersion := scVersion,
+//    licenseReportTitle := "third_party_licenses",
+//    licenseReportDir := baseDirectory.value / "third_party",
+//    licenseReportTypes := Seq(MarkDown),
+//    licenseReportNotes := {
+//      case DepModuleInfo(group, id, version) if group contains "org.lwjgl" => "Lightweight Java Game Library"
+//      case DepModuleInfo(group, id, version) if id contains "junit" => "Used for testing"
+//      case DepModuleInfo(group, id, version) if id contains "jsr305" => "Required to compile, transitive dep."
+//    },
     libraryDependencies += junit
 )
 
@@ -47,7 +45,8 @@ val io = project.dependsOn(math).settings(commonSettings:_*).settings(
 // The shader DSL.
 val shader = project.dependsOn(math, io).settings(commonSettings:_*).settings(
     libraryDependencies += lwjgl("lwjgl"),
-    libraryDependencies += lwjgl("lwjgl-opengl")
+    libraryDependencies += lwjgl("lwjgl-opengl"),
+    libraryDependencies += "org.scala-lang" %% "scala3-tasty-inspector" % scalaVersion.value
 )
 
 // A scene-graph library built on all the other components.   Used mostly

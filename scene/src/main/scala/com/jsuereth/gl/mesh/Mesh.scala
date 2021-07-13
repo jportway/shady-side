@@ -17,7 +17,7 @@
 package com.jsuereth.gl
 package mesh
 
-import math.{given _, _}
+import math.{given, *}
 import org.lwjgl.system.MemoryStack
 import io.{VertexArrayObject, BufferLoadable, vaoAttributes}
 
