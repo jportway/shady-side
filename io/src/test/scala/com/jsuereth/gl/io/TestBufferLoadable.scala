@@ -1,11 +1,11 @@
 package com.jsuereth.gl
 package io
 package testbufferlodable
-
+import scala.deriving._
 import math._
-
 import org.junit.Test
 import org.junit.Assert._
+
 import java.nio.ByteBuffer
 
 case class ExamplePod(x: Vec3[Float], y: Vec2[Int], z: Vec2[Boolean]) derives BufferLoadable

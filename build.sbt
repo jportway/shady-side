@@ -43,11 +43,11 @@ val io = project.dependsOn(math).settings(commonSettings:_*).settings(
 )
 
 // The shader DSL.
-val shader = project.dependsOn(math, io).settings(commonSettings:_*).settings(
-    libraryDependencies += lwjgl("lwjgl"),
-    libraryDependencies += lwjgl("lwjgl-opengl"),
-    libraryDependencies += "org.scala-lang" %% "scala3-tasty-inspector" % scalaVersion.value
-)
+//val shader = project.dependsOn(math, io).settings(commonSettings:_*).settings(
+//    libraryDependencies += lwjgl("lwjgl"),
+//    libraryDependencies += lwjgl("lwjgl-opengl"),
+//    libraryDependencies += "org.scala-lang" %% "scala3-tasty-inspector" % scalaVersion.value
+//)
 
 // A scene-graph library built on all the other components.   Used mostly
 // so we can demonstrate each bit.
@@ -56,13 +56,13 @@ val scene = project.dependsOn(math, io).settings(commonSettings:_*).settings(
 )
 
 // An example project that renders a scene with a cartoon shader.
-val example = project.dependsOn(shader, scene).settings(commonSettings:_*).settings(
-    libraryDependencies += lwjgl("lwjgl"),
-    libraryDependencies += lwjgl("lwjgl-glfw"),
-    libraryDependencies += lwjgl("lwjgl-opengl"),
-    libraryDependencies += lwjglNative("lwjgl-glfw"),
-    libraryDependencies += lwjglNative("lwjgl"),
-    libraryDependencies += lwjglNative("lwjgl-opengl"),
-    // Yay for this silently failing unpickling.
-    libraryDependencies += findBugs % "provided"
-)
+//val example = project.dependsOn(shader, scene).settings(commonSettings:_*).settings(
+//    libraryDependencies += lwjgl("lwjgl"),
+//    libraryDependencies += lwjgl("lwjgl-glfw"),
+//    libraryDependencies += lwjgl("lwjgl-opengl"),
+//    libraryDependencies += lwjglNative("lwjgl-glfw"),
+//    libraryDependencies += lwjglNative("lwjgl"),
+//    libraryDependencies += lwjglNative("lwjgl-opengl"),
+//    // Yay for this silently failing unpickling.
+//    libraryDependencies += findBugs % "provided"
+//)

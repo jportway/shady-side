@@ -42,12 +42,14 @@ inline def sizeOf[T]: Int = inline erasedValue[T] match {
     case _: Matrix3x3[t] => 9*sizeOf[t]
     // TODO - SizedArray opaque type...
     case _: (a *: b) => sizeOf[a]+sizeOf[b]
+    case _: EmptyTuple => 0
     case _: Product => summonFrom {
-        case m: Mirror.ProductOf[T] => sizeOf[m.MirroredElemTypes]
-        case _ => compiletime.error("Product is not plain-old-data, cannot compute the type.")
+//      case given Mirror.ProductOf[T] =>
+//        val x = summon[Mirror.ProductOf[T]]
+//        sizeOf[Int]
+      case m: Mirror.ProductOf[T] => sizeOf[m.MirroredElemTypes]
+      case _ => compiletime.error("Product is not plain-old-data, cannot compute the type.")
     }
-    // Note: Unit shows up when we decompose tuples with *:
-    case _: Unit => 0
     case _ => compiletime.error("Cannot discover the binary size of type T.")
 }
 

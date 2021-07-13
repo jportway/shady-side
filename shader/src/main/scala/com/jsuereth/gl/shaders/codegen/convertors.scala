@@ -17,7 +17,9 @@
 package com.jsuereth.gl.shaders
 package codegen
 
-import quoted.QuoteContext
+import scala.quoted.*
+import scala.tasty.inspector.*
+
 import com.jsuereth.gl.math._
 import com.jsuereth.gl.texture.{Texture2D}
 
@@ -108,10 +110,10 @@ class DefaultShaderConvertEnv extends ShaderConvertorEnv {
 }
 
 /** Utilities for translating Scala into GLSL. */
-class Convertors[R <: tasty.Reflection](val r: R)(using QuoteContext) {
+class Convertors[R <: tasty.Reflection](using Quotes)(val r: R) {
     // TODO - given new API we may be able to use Type/TypeTree directly without
     // hiding it behind tasty.Reflection instance.
-    import r._
+    import quotes.reflect.*
 
     def toGlslTypeFromTree(tpe: r.TypeTree): String = toGlslType(tpe.tpe)
     def toGlslType(tpe: r.Type): String = {
