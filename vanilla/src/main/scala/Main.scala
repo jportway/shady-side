@@ -221,15 +221,13 @@ object Main {
         def applyMaterial(material: RawMaterial): Unit = {
           summon[ShaderLoadingEnvironment].pop()
           summon[ShaderLoadingEnvironment].push()
-//                    SimpleLightShader.materialShininess := material.base.ns
-//                    SimpleLightShader.materialKd := material.base.kd
-//                    SimpleLightShader.materialKs := material.base.ks
-//                    material.textures.kd match {
-//                        case Some(ref) =>
-//                             SimpleLightShader.materialKdTexture :=
-//                                TextureManager.get(ref.filename)
-//                        case None => ()
-//                    }
+          DefaultShader.materialShininess := material.base.ns
+          DefaultShader.materialKd := material.base.kd
+          DefaultShader.materialKs := material.base.ks
+          material.textures.kd match {
+            case Some(ref) => DefaultShader.materialKdTexture := TextureManager.get(ref.filename)
+            case None      => ()
+          }
         }
       }
 
@@ -248,19 +246,21 @@ object Main {
           val textures = ActiveTextures()
         }
         env.push()
-               DefaultShader.world := WorldData(light = scene.lights.next,
-                                                    eye = scene.camera.eyePosition,
-                                                    view = scene.camera.viewMatrix,
-                                                    projection = projectionMatrix)
-                val ctx = meshRenderCtx
-                DefaultShader.colour := Vec4(0,1,0,1)
-                for (o <- scene.objectsInRenderOrder) {
-                  env.push()
-                  DefaultShader.modelMatrix := o.modelMatrix
-                  // TODO - pull the VAO for the model.
-                  loadedMesh.render(ctx)
-                  env.pop()
-                }
+        DefaultShader.world := WorldData(
+          light = scene.lights.next,
+          eye = scene.camera.eyePosition,
+          view = scene.camera.viewMatrix,
+          projection = projectionMatrix
+        )
+        val ctx = meshRenderCtx
+        DefaultShader.colour := Vec4(0, 1, 0, 1)
+        for (o <- scene.objectsInRenderOrder) {
+          env.push()
+          DefaultShader.modelMatrix := o.modelMatrix
+          // TODO - pull the VAO for the model.
+          loadedMesh.render(ctx)
+          env.pop()
+        }
 
         // TriangleShader.bind()
         // triangleVAO.draw(0, 3)
