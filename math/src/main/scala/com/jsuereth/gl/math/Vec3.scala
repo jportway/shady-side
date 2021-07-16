@@ -86,6 +86,8 @@ final class Vec3[T : ClassTag](private[this] val values: Array[T]) {
   def as[U : ClassTag]: Vec3[U] = ???
 
   override def toString: String = s"($x,$y,$z)"
+
+  // TODO - typesafe equals
   override def equals(o: Any): Boolean =
     o match {
       case other: Vec3[T] => (x == other.x) && (y == other.y) && (z == other.z)
