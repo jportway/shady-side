@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="sbt 1" modules="example,io,math,scene,shader,shady-side,shady-side_5323" />
+    <profile name="sbt 1" modules="example,shady-side,shady-side_5323" />
+    <profile name="sbt 2" modules="io,math,scene,shader,vanilla">
+      <parameters>
+        <parameter value="-Xcheck-macros" />
+      </parameters>
+    </profile>
   </component>
 </project>

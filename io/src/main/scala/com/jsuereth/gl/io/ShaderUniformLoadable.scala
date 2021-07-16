@@ -203,7 +203,7 @@ object ShaderUniformLoadable {
       case (_: (etype *: etail), _: (label *: ltail)) =>
         val field = compiletime.constValue[label].asInstanceOf[String] -> shapeOf[etype]
         summonFields[etail, ltail] + field
-      case (_: Unit, _: Unit) => Map.empty
+      case (_: EmptyTuple, _: EmptyTuple) => Map.empty
     }
 
   inline def loadUniforms[Elems, Labels](location: UniformLocation.StructLocation,
@@ -215,7 +215,7 @@ object ShaderUniformLoadable {
           compiletime.constValue[label].asInstanceOf[String]),
           value.productElement(idx).asInstanceOf)
         loadUniforms[etail, ltail](location, value, idx+1)
-      case (_: Unit, _: Unit) => ()
+      case (_: EmptyTuple, _: EmptyTuple) => ()
       case _ => compiletime.error("Unexpected type!")
     }
 

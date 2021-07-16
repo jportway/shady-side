@@ -27,7 +27,7 @@ import org.lwjgl.system.MemoryStack
 
 /** this object contains our helper macros for this DSL. */
 object DslShaderProgram {
-    def defineShadersImpl[T](f: Expr[T])(using ctx: QuoteContext): Expr[(String,String)] = {
+    def defineShadersImpl[T](f: Expr[T])(using ctx: Quotes): Expr[(String,String)] = {
         import ctx.tasty._
         val helpers = codegen.Convertors[ctx.tasty.type](ctx.tasty)
         val (vert,frag) = helpers.convert(f.unseal)
@@ -79,7 +79,7 @@ abstract class DslShaderProgram extends BasicShaderProgram {
   // COMPILE-TIME ONLY METHODS.  TODO - move this into some kind of API file...
   // Allow DslShaders to access uniform values, but force this call to be within DSL.
   @compileTimeOnly("Can only access a uniform within a Shader.")
-  inline def [T](c: Uniform[T]) apply(): T = ???
+  inline def  apply[T]()(c: Uniform[T]): T = ???
   @compileTimeOnly("Can only define input within a shader.")
   inline def Input[T](location: Int): T = ???
   @compileTimeOnly("Can only define output within a shader.")
@@ -88,5 +88,5 @@ abstract class DslShaderProgram extends BasicShaderProgram {
   inline def glPosition[T](vec: Vec4[T]): Unit = ???
   /** Samples a texture at a coordinate, pulling the color back. */
   @compileTimeOnly("Textures can only be sampled within a fragment shader.")
-  inline def (c: Texture2D) texture(coord: Vec2[Float]): Vec4[Float] = ???
+  inline def texture(coord: Vec2[Float])(c: Texture2D) : Vec4[Float] = ???
 }
