@@ -34,9 +34,9 @@ import com.jsuereth.gl.io.VertexBufferObject
 import com.jsuereth.gl.io.BufferLoadable
 
 object Main {
-  val NULL = 0L
-  val WIDTH = 1920
-  val HEIGHT = 1080
+  val NULL         = 0L
+  val WIDTH        = 1920
+  val HEIGHT       = 1080
   var window: Long = 0
   var scene: Scene = null
 
@@ -97,8 +97,8 @@ object Main {
     }
 
     // Configure our window
-    glfwDefaultWindowHints() // optional, the current window hints are already the default
-    glfwWindowHint(GLFW_VISIBLE, GL_FALSE) // the window will stay hidden after creation
+    glfwDefaultWindowHints()                // optional, the current window hints are already the default
+    glfwWindowHint(GLFW_VISIBLE, GL_FALSE)  // the window will stay hidden after creation
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE) // the window will be resizable
 
     // Create the window
@@ -175,7 +175,7 @@ object Main {
       System.err.println(s" - Loaded model [$name]: $mesh")
     }
     // Preload textures.
-    val mesh = models.iterator.next._2
+    val mesh        = models.iterator.next._2
     val scaleFactor = 1f
     // TODO - start rendering using the scene...
     scene = SimpleStaticSceneBuilder()
@@ -195,9 +195,8 @@ object Main {
       .done()
       .light(Vec3(20f, 100f, -5f))
       .done()
-    val projectionMatrix =
-      Matrix4.perspective(45f, WIDTH.toFloat / HEIGHT.toFloat, 1f, 200f)
-    val loadedMesh = withMemoryStack(load(mesh))
+    val projectionMatrix = Matrix4.perspective(45f, WIDTH.toFloat / HEIGHT.toFloat, 1f, 200f)
+    val loadedMesh       = withMemoryStack(load(mesh))
     DefaultShader.load()
 
     System.out.println("-- Shader struct debug --")
@@ -207,14 +206,14 @@ object Main {
     System.out.println(s" world.view: ${DefaultShader.debugUniform("world.view")}")
     System.out.println(s" world.projection: ${DefaultShader.debugUniform("world.projection")}")
 
-    case class CVert(pos:Vec3[Float],col:Vec3[Float]) derives BufferLoadable
-    val triangleVAO = withMemoryStack {
-        val a = CVert(Vec3(-0.5f, -0.5f, 0.0f),Vec3(1,0,0))
-        val b = CVert(Vec3(0.5f, -0.5f, 0.0f),Vec3(0,1,0))
-        val c = CVert(Vec3(0.0f, 0.5f, 0.0f),Vec3(0,0,1))
-        VertexArrayObject.loadRaw(Vector(a,b,c))
-    }
-    TriangleShader.load()
+    // case class CVert(pos: Vec3[Float], col: Vec3[Float]) derives BufferLoadable
+    // val triangleVAO = withMemoryStack {
+    //   val a = CVert(Vec3(-0.5f, -0.5f, 0.0f), Vec3(1, 0, 0))
+    //   val b = CVert(Vec3(0.5f, -0.5f, 0.0f), Vec3(0, 1, 0))
+    //   val c = CVert(Vec3(0.0f, 0.5f, 0.0f), Vec3(0, 0, 1))
+    //   VertexArrayObject.loadRaw(Vector(a, b, c))
+    // }
+    // TriangleShader.load()
 
     def meshRenderCtx(using ShaderLoadingEnvironment): MeshRenderContext =
       new MeshRenderContext {
@@ -245,26 +244,26 @@ object Main {
       DefaultShader.bind()
       withMemoryStack {
         given env: ShaderLoadingEnvironment with {
-          val stack = summon[MemoryStack]
+          val stack    = summon[MemoryStack]
           val textures = ActiveTextures()
         }
         env.push()
-//                SimpleLightShader.world := WorldData(light = scene.lights.next,
-//                                                     eye = scene.camera.eyePosition,
-//                                                     view = scene.camera.viewMatrix,
-//                                                     projection = projectionMatrix)
-//                 val ctx = meshRenderCtx
-//                 DefaultShader.colour := Vec4(0,1,0,1)
-//                 for (o <- scene.objectsInRenderOrder) {
-//                     env.push()
-// //                    SimpleLightShader.modelMatrix := o.modelMatrix
-//                     // TODO - pull the VAO for the model.
-//                     loadedMesh.render(ctx)
-//                     env.pop()
-//                 }
+               DefaultShader.world := WorldData(light = scene.lights.next,
+                                                    eye = scene.camera.eyePosition,
+                                                    view = scene.camera.viewMatrix,
+                                                    projection = projectionMatrix)
+                val ctx = meshRenderCtx
+                DefaultShader.colour := Vec4(0,1,0,1)
+                for (o <- scene.objectsInRenderOrder) {
+                  env.push()
+                  DefaultShader.modelMatrix := o.modelMatrix
+                  // TODO - pull the VAO for the model.
+                  loadedMesh.render(ctx)
+                  env.pop()
+                }
 
-        TriangleShader.bind()
-        triangleVAO.draw(0, 3)
+        // TriangleShader.bind()
+        // triangleVAO.draw(0, 3)
         env.pop()
       }
     }
